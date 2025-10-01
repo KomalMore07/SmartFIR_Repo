@@ -1,0 +1,85 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar full width */
+.navbar {
+  width: 100%;
+  background-color: skyblue;
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  background-color: skyblue !important;
+}
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+  max-width: 100% !important;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.nav-link{
+  color: black;
+  margin-left: 20px;
+}
+
+.logout-btn {
+  color: black;
+  background-color: skyblue;
+  transition: background-color 0.3s ease; 
+}
+
+.logout-btn:hover {
+  background-color: deepskyblue; 
+}
+
+.nav-link{
+  border-radius: 10%;
+   background-color: skyblue;
+  transition: background-color 0.3s ease;
+}
+.nav-link:hover{
+  background-color: deepskyblue;
+}
+.nav-drop{
+  color: black;
+  border-radius: 5px;
+}
+
+.nav-2{
+  background-color: aliceblue;
+  border-radius: 5px;
+}
+
+.container-card {
+  transition: all 0.3s ease-in-out; /* smooth effect */
+  border: 2px solid transparent; /* default no border */
+  border-radius: 10px; /* optional rounded edges */
+}
+
+.container-card:hover {
+  border: 4px solid rgb(32, 32, 91); /* blue border */
+  box-shadow: 0 0 15px rgba(16, 16, 57, 0.7), 
+              0 0 25px rgba(97, 97, 254, 0.5); /* glowing shiny effect */
+}
