@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fir',
+    'rest_framework',
     # 'rest_framework',   # ✅ add this later when you install Django REST Framework
 ]
 

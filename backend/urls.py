@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.urls import path
-from . import views   # 👈 import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-     # 👈 default route goes to index.html
+    path("admin/", admin.site.urls),
+    path("api/", include("fir.urls")),  # now Django API runs at /api/hello/
 ]
