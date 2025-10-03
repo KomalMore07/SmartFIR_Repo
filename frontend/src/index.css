@@ -16,15 +16,15 @@ body, html {
   padding: 0;
 }
 
-/* Navbar full width */
+/* Navbar */
 .navbar {
   width: 100%;
-  background-color: skyblue;
+  background-color: brown;
   margin: 0;
   padding: 0;
 }
 .navbar {
-  background-color: skyblue !important;
+  background-color: brown !important;
 }
 
 .container-fluid {
@@ -32,7 +32,15 @@ body, html {
   padding: 0;
   max-width: 100% !important;
 }
-
+.dropdown-item{
+  color: white;
+}
+.dropdown-item:hover{
+  background-color: brown;
+}
+.nav-drop:hover{
+  color: black;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -40,37 +48,27 @@ code {
 }
 
 .nav-link{
-  color: black;
+  color: white;
   margin-left: 20px;
 }
 
 .logout-btn {
-  color: black;
-  background-color: skyblue;
+  color:white;
+  background-color: brown;
   transition: background-color 0.3s ease; 
 }
 
-.logout-btn:hover {
-  background-color: deepskyblue; 
-}
 
 .nav-link{
   border-radius: 10%;
-   background-color: skyblue;
+   background-color:brown;
   transition: background-color 0.3s ease;
 }
-.nav-link:hover{
-  background-color: deepskyblue;
-}
-.nav-drop{
-  color: black;
-  border-radius: 5px;
-}
 
-.nav-2{
-  background-color: aliceblue;
-  border-radius: 5px;
-}
+
+
+
+/* Home page */
 
 .container-card {
   transition: all 0.3s ease-in-out; /* smooth effect */
@@ -82,4 +80,63 @@ code {
   border: 4px solid rgb(32, 32, 91); /* blue border */
   box-shadow: 0 0 15px rgba(16, 16, 57, 0.7), 
               0 0 25px rgba(97, 97, 254, 0.5); /* glowing shiny effect */
+}
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 650px;
+  overflow: hidden;
+}
+
+.carousel-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: none;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-item.active {
+  opacity: 1;
+  animation: zoomFade 4s ease-in-out forwards;
+}
+
+@keyframes zoomFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.container-expand-lg{
+  color: white;
+}
+
+.col-link a{
+  color: white;
+}
+
+
+/* Signup Page */
+.container-sign{
+  padding-left: 90px;
+  padding-right: 90px;
+  
+  text-align: center;
 }

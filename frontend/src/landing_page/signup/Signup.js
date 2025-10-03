@@ -57,7 +57,7 @@ function Signup() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container container-sign mt-5">
       <h2 className="mb-4">Signup</h2>
       <form onSubmit={handleSignup}>
         <div className="row mb-3">

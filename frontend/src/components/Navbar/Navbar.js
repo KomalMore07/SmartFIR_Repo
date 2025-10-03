@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg border-bottom" style={{ backgroundColor: "skyblue" }}>
+    <nav className="navbar navbar-expand-lg border-bottom" >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img src="media/images/logo.png" alt="Logo" style={{ width: "60px",marginLeft:"20px" }} />
@@ -28,7 +28,7 @@ function Navbar() {
             <Link className="nav-link mt-2" to="/ContactPage">Contact</Link>
             
             {/* Dropdown */}
-            <div className="mt-2 active dropdown">
+            <div className="nav mt-2 active dropdown">
               <button
                 className="nav-link nav-drop dropdown-toggle"
                 id="dropdownMenu2"
@@ -37,7 +37,7 @@ function Navbar() {
               >
                 Select Role
               </button>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenu2" style={{backgroundColor:"brown"}}>
                 <li><Link className="dropdown-item" to="/Signup">Victim</Link></li>
                 <li><Link className="dropdown-item" to="/LoginPolice">Police</Link></li>
               </ul>

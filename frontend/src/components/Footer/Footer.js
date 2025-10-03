@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="container-expand-lg border-top mt-5" style={{backgroundColor:"skyblue"}}>
+    <div className="container-expand-lg border-top" style={{backgroundColor:"brown"}}>
       <div className="row mt-2 p-5">
         <div className="col">
           <img src="media/images/logo.png" style={{ width: "20%" }} /> 
@@ -17,18 +17,18 @@ function Footer() {
             <i class="fa fa-telegram p-2" aria-hidden="true"></i>
           </div>
         </div>
-        <div className="col">
+        <div className="col col-link">
           <p className="fw-bold">QUICK LINKS</p>
-          <a href=""className="text-muted text-decoration-none d-block">Ministry of Home Affairs (MHA) </a> <br/>
-          <a href=""className="text-muted text-decoration-none d-block">National Crime Records Bureau (NCRB) </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block">Central Bureau of Investigation (CBI) </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block">National Investigation Agency(NIA)</a><br/>
-          <a href=""className="text-muted text-decoration-none d-block">E-Courts </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block"> MeitY </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block">Central Police Organizations</a><br/>
-          <a href=""className="text-muted text-decoration-none d-block"> Other Links </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block">Vahan Samanvay </a><br/>
-          <a href=""className="text-muted text-decoration-none d-block"> A Video on Digital Police Portal</a><br/>
+          <a href=""className=" text-decoration-none d-block">Ministry of Home Affairs (MHA) </a> <br/>
+          <a href=""className=" text-decoration-none d-block">National Crime Records Bureau (NCRB) </a><br/>
+          <a href=""className=" text-decoration-none d-block">Central Bureau of Investigation (CBI) </a><br/>
+          <a href=""className=" text-decoration-none d-block">National Investigation Agency(NIA)</a><br/>
+          <a href=""className=" text-decoration-none d-block">E-Courts </a><br/>
+          <a href=""className=" text-decoration-none d-block"> MeitY </a><br/>
+          <a href=""className=" text-decoration-none d-block">Central Police Organizations</a><br/>
+          <a href=""className=" text-decoration-none d-block"> Other Links </a><br/>
+          <a href=""className=" text-decoration-none d-block">Vahan Samanvay </a><br/>
+          <a href=""className=" text-decoration-none d-block"> A Video on Digital Police Portal</a><br/>
         </div>
         <div className="col">
           <p className="fw-bold">REACH US</p>
