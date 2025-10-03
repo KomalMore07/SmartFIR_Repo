@@ -135,8 +135,14 @@ code {
 
 /* Signup Page */
 .container-sign{
+  height: 70%;
+  width: 60%;
   padding-left: 90px;
   padding-right: 90px;
-  
-  text-align: center;
+  padding-bottom: 50px;
+}
+
+.border{
+  border-radius: 5px;
+  padding: 20px;
 }

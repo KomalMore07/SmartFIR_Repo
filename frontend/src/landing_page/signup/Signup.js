@@ -57,8 +57,9 @@ function Signup() {
   };
 
   return (
-    <div className="container container-sign mt-5">
-      <h2 className="mb-4">Signup</h2>
+    <div className="container container-sign mt-4">
+      <h2 className="mb-2" style={{textAlign:"center"}}>Signup</h2>
+      <div className="border">
       <form onSubmit={handleSignup}>
         <div className="row mb-3">
           <div className="col">
@@ -156,7 +157,7 @@ function Signup() {
           />
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-outline-danger"
             onClick={handleVerifyEmail}
           >
             Verify
@@ -175,7 +176,7 @@ function Signup() {
           />
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-outline-danger"
             onClick={handleVerifyAadhaar}
           >
             Verify
@@ -194,7 +195,7 @@ function Signup() {
           />
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-outline-danger"
             onClick={handleVerifyPhone}
           >
             {otpSent ? "OTP Successfully Sent" : "Send OTP"}
@@ -213,16 +214,19 @@ function Signup() {
           />
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-outline-danger"
             onClick={handleVerifyOTP}
           >
             Verify
           </button>
         </div>
-        <button type="submit" className="btn btn-success">
+        <div className="d-flex justify-content-center">
+          <button type="submit" className="btn btn-danger ">
           Signup
         </button>
+        </div>
       </form>
+      </div>
     </div>
   );
 }
