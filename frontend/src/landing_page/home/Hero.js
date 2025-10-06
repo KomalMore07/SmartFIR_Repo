@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 const slides = [
   "/media/images/home2.jpg",
   "/media/images/home3.jpg",
-  "/media/images/home.png"
+  "/media/images/home.jpg"
 ];
 
 function Hero() {

@@ -5,7 +5,7 @@ function Footer() {
     <div className="container-expand-lg border-top" style={{backgroundColor:"brown"}}>
       <div className="row mt-2 p-5">
         <div className="col">
-          <img src="media/images/logo.png" style={{ width: "20%" }} /> 
+          <img src="media/images/logo.jpg" style={{ width: "20%" }} /> 
           <p><br/>
             &copy;  Content Owned by National Crime Records Bureau(NCRB), Government of India Site Maintained by National Informatics Centre.
           </p>
