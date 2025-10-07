@@ -13,6 +13,7 @@ class Victim(models.Model):
     aadhaar = models.CharField(max_length=12, unique=True)
     phone = models.CharField(max_length=15, unique=True)
     is_verified = models.BooleanField(default=False)
+    is_phone_verified = models.BooleanField(default=False)  # ✅ New field
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -26,3 +27,12 @@ class EmailVerification(models.Model):
 
     def __str__(self):
         return f"{self.email} - {self.token}"
+
+
+class PhoneVerification(models.Model):  # ✅ New model
+    phone = models.CharField(max_length=15, unique=True)
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.phone} - {self.otp}"

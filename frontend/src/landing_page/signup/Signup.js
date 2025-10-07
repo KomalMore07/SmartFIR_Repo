@@ -16,17 +16,16 @@ function Signup() {
     otp: "",
   });
 
-  const [otpSent, setOtpSent] = useState(false);
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
   const navigate = useNavigate();
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // ✅ Simplified Email Verification (with 3-second delay before marking verified)
   const handleVerifyEmail = async () => {
     try {
       const response = await fetch(
@@ -41,36 +40,48 @@ function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Verification email sent successfully!");
-        // ⏳ Wait 3 seconds before marking verified (simulate backend confirmation)
-        setTimeout(() => {
-          setEmailVerified(true);
-          alert("Email verified successfully!");
-        }, 3000);
+        alert("Verification code sent to your email!");
+        setEmailOtpSent(true);
       } else {
         alert("Error: " + (data.error || "Failed to send verification email."));
-        console.error(data);
       }
     } catch (error) {
-      console.error("Error verifying email:", error);
-      alert("Error verifying email: " + error.message);
+      console.error("Error sending email verification:", error);
+      alert("Error sending verification email: " + error.message);
     }
   };
 
+  const handleVerifyOTP = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/verify-email/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: formData.otp,
+        }),
+      });
 
-  // Aadhaar verification (dummy for now)
-  const handleVerifyAadhaar = () => alert("Aadhaar verified!");
+      const data = await response.json();
 
-  // Phone verification (dummy for now)
-  const handleVerifyPhone = () => {
-    alert("OTP successfully sent!");
-    setOtpSent(true);
+      if (response.ok) {
+        alert("Email verified successfully!");
+        setEmailVerified(true);
+        setEmailOtpSent(false);
+      } else {
+        alert("Error verifying OTP: " + (data.error || "Invalid OTP"));
+      }
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      alert("Error verifying OTP: " + error.message);
+    }
   };
 
-  // OTP verification (dummy for now)
-  const handleVerifyOTP = () => alert("OTP verified!");
+  const handleVerifyPhone = () => {
+    alert("OTP successfully sent to phone!");
+    setPhoneOtpSent(true);
+  };
 
-  // Final Signup Submit
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -101,14 +112,24 @@ function Signup() {
   };
 
   return (
-    <div className="container container-sign mt-4">
-      <h2 className="mb-2" style={{ textAlign: "center" }}>
-        Signup
-      </h2>
-      <div className="border">
+    <div
+      className="container d-flex justify-content-center align-items-center mt-5 mb-5"
+      style={{ minHeight: "100vh" }}
+    >
+      <div
+        className="p-5 shadow-lg"
+        style={{
+          width: "700px",
+          border: "1px solid #ccc",
+          borderRadius: "10px",
+          backgroundColor: "#fff",
+        }}
+      >
+        <h2 className="text-center mb-5">Signup</h2>
+
         <form onSubmit={handleSignup}>
-          {/* First + Last Name */}
-          <div className="row mb-3">
+          {/* First & Last Name */}
+          <div className="row mb-4">
             <div className="col">
               <label>First Name</label>
               <input
@@ -118,6 +139,7 @@ function Signup() {
                 value={formData.firstName}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
             <div className="col">
@@ -129,12 +151,13 @@ function Signup() {
                 value={formData.lastName}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
           </div>
 
           {/* Address */}
-          <div className="mb-3">
+          <div className="mb-4">
             <label>Address</label>
             <input
               type="text"
@@ -143,11 +166,12 @@ function Signup() {
               value={formData.address}
               onChange={handleChange}
               required
+              style={{ height: "50px" }}
             />
           </div>
 
-          {/* City + State */}
-          <div className="row mb-3">
+          {/* City & State */}
+          <div className="row mb-4">
             <div className="col">
               <label>City</label>
               <input
@@ -157,6 +181,7 @@ function Signup() {
                 value={formData.city}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
             <div className="col">
@@ -168,12 +193,13 @@ function Signup() {
                 value={formData.state}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
           </div>
 
-          {/* Pin Code + Country */}
-          <div className="row mb-3">
+          {/* Pincode & Country */}
+          <div className="row mb-4">
             <div className="col">
               <label>Pin Code</label>
               <input
@@ -183,6 +209,7 @@ function Signup() {
                 value={formData.pincode}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
             <div className="col">
@@ -194,12 +221,28 @@ function Signup() {
                 value={formData.country}
                 onChange={handleChange}
                 required
+                style={{ height: "50px" }}
               />
             </div>
           </div>
 
-          {/* Email + Verify Button */}
-          <div className="mb-3 d-flex align-items-center">
+          {/* Aadhaar (moved above Email) */}
+          <div className="mb-4">
+            <label>Aadhaar Card Number</label>
+            <input
+              type="text"
+              className="form-control"
+              name="aadhaar"
+              placeholder="Aadhaar Card Number"
+              value={formData.aadhaar}
+              onChange={handleChange}
+              required
+              style={{ height: "50px" }}
+            />
+          </div>
+
+          {/* Email with verify */}
+          <div className="mb-4 d-flex align-items-center">
             <input
               type="email"
               className="form-control me-2"
@@ -208,6 +251,8 @@ function Signup() {
               value={formData.email}
               onChange={handleChange}
               required
+              style={{ height: "50px" }}
+              disabled={emailVerified}
             />
             <button
               type="button"
@@ -217,32 +262,35 @@ function Signup() {
               onClick={handleVerifyEmail}
               disabled={!formData.email || emailVerified}
             >
-              {emailVerified ? "Verified ✅" : "Verify"}
+              {emailVerified ? "Verified ✅" : "Send OTP"}
             </button>
           </div>
 
-          {/* Aadhaar */}
-          <div className="mb-3 d-flex align-items-center">
-            <input
-              type="text"
-              className="form-control me-2"
-              name="aadhaar"
-              placeholder="Aadhaar Card Number"
-              value={formData.aadhaar}
-              onChange={handleChange}
-              required
-            />
-            <button
-              type="button"
-              className="btn btn-outline-danger"
-              onClick={handleVerifyAadhaar}
-            >
-              Verify
-            </button>
-          </div>
+          {/* OTP with verify (email only) */}
+          {emailOtpSent && (
+            <div className="mb-4 d-flex align-items-center">
+              <input
+                type="text"
+                className="form-control me-2"
+                name="otp"
+                placeholder="Enter Email OTP"
+                value={formData.otp}
+                onChange={handleChange}
+                required
+                style={{ height: "50px" }}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={handleVerifyOTP}
+              >
+                Verify OTP
+              </button>
+            </div>
+          )}
 
-          {/* Phone */}
-          <div className="mb-3 d-flex align-items-center">
+          {/* Phone with OTP send */}
+          <div className="mb-4 d-flex align-items-center">
             <input
               type="text"
               className="form-control me-2"
@@ -251,42 +299,25 @@ function Signup() {
               value={formData.phone}
               onChange={handleChange}
               required
+              style={{ height: "50px" }}
             />
             <button
               type="button"
               className="btn btn-outline-danger"
               onClick={handleVerifyPhone}
             >
-              {otpSent ? "OTP Sent ✅" : "Send OTP"}
+              {phoneOtpSent ? "OTP Sent ✅" : "Send OTP"}
             </button>
           </div>
 
-          {/* OTP */}
-          <div className="mb-3 d-flex align-items-center">
-            <input
-              type="text"
-              className="form-control me-2"
-              name="otp"
-              placeholder="OTP"
-              value={formData.otp}
-              onChange={handleChange}
-              required
-            />
-            <button
-              type="button"
-              className="btn btn-outline-danger"
-              onClick={handleVerifyOTP}
-            >
-              Verify
-            </button>
-          </div>
-
-          {/* Signup Button */}
-          <div className="d-flex justify-content-center">
-            <button type="submit" className="btn btn-danger">
-              Signup
-            </button>
-          </div>
+          {/* Submit */}
+          <button
+            type="submit"
+            className="btn btn-danger w-100 mt-3"
+            style={{ height: "50px", fontSize: "18px" }}
+          >
+            Signup
+          </button>
         </form>
       </div>
     </div>

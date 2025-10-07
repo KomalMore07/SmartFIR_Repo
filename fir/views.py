@@ -97,23 +97,24 @@ def signup(request):
             if not email:
                 return JsonResponse({"error": "Email is required"}, status=400)
 
-            if not Victim.objects.filter(email=email, is_verified=True).exists():
+            # ✅ Check if email is already verified
+            victim = Victim.objects.filter(email=email, is_verified=True).first()
+            if not victim:
                 return JsonResponse({"error": "Please verify your email first."}, status=400)
 
-            victim = Victim.objects.create(
-                first_name=data.get("firstName"),
-                last_name=data.get("lastName"),
-                address=data.get("address"),
-                city=data.get("city"),
-                state=data.get("state"),
-                pincode=data.get("pincode"),
-                country=data.get("country"),
-                email=email,
-                aadhaar=data.get("aadhaar"),
-                phone=data.get("phone"),
-                created_at=timezone.now(),
-                is_verified=True,
-            )
+            # ✅ Update existing record instead of creating a new one
+            victim.first_name = data.get("firstName")
+            victim.last_name = data.get("lastName")
+            victim.address = data.get("address")
+            victim.city = data.get("city")
+            victim.state = data.get("state")
+            victim.pincode = data.get("pincode")
+            victim.country = data.get("country")
+            victim.aadhaar = data.get("aadhaar")
+            victim.phone = data.get("phone")
+            victim.created_at = timezone.now()
+            victim.is_verified = True
+            victim.save()
 
             return JsonResponse({"message": "Signup successful!", "id": victim.id})
 
