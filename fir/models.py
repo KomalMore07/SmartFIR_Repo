@@ -28,11 +28,11 @@ class EmailVerification(models.Model):
     def __str__(self):
         return f"{self.email} - {self.token}"
 
-
-class PhoneVerification(models.Model):  # ✅ New model
-    phone = models.CharField(max_length=15, unique=True)
-    otp = models.CharField(max_length=6)
+class PhoneVerification(models.Model):
+    phone = models.CharField(max_length=15, unique=True)  # fine
+    secret = models.CharField(max_length=32, blank=True, null=True)  # 32 chars enough for pyotp
+    verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.phone} - {self.otp}"
+        return f"{self.phone} - {'Verified' if self.verified else 'Not Verified'}"
