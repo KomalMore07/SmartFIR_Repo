@@ -11,7 +11,6 @@ function VictimDashboard() {
         <Outlet />
       </div>
       
-      
     </>
   );
 }

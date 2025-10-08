@@ -1,69 +1,125 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { FaHome, FaTimes, FaChevronRight, FaChevronDown } from "react-icons/fa";
 
 function VictimNavbar() {
-  const scrollToCard = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const [isOpen, setIsOpen] = useState(false);
+  const [showLanguages, setShowLanguages] = useState(false); 
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
     <div>
-      <ul className="nav justify-content-center">
-        <li className="nav-item">
-          <Link className="nav-link nav-2 active" to="/VictimDashboard">
-            VictimDashboard
+      <nav className="navbar-light shadow-sm mt-3">
+        <button
+          className="btn d-flex align-items-center"
+          onClick={toggleSidebar}
+          style={{ fontWeight: "bold" }}
+        >
+          <FaHome size={22} className="me-2" />
+          <h4 style={{ fontSize: "20px", margin: 0 }}>Victim Dashboard</h4>
+        </button>
+      </nav>
+
+      {/* Sidebar */}
+      <div
+        className={`shadow ${isOpen ? "d-block" : "d-none"}`}
+        style={{
+          width: "280px",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 70,
+          backgroundColor: "#fff",
+          transition: "all 0.3s ease",
+          zIndex: 1100,
+          paddingTop: "13px",
+          borderRight: "1px solid #ddd",
+        }}
+      >
+        <ul className="list-group list-group-flush ">
+          <li className="list-group-item d-flex justify-content-between align-items-center fw-bold">
+            Victim Dashboard
+            <button className="btn p-0" onClick={toggleSidebar}>
+              <FaTimes size={16} />
+            </button>
+          </li>
+
+          {/* Menu Items */}
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard"   // ✅ goes to UserProfile by default
+          >
+            User Profile <FaChevronRight size={14} />
           </Link>
-        </li>
-        <li className="nav-item">
-          <button className="nav-link nav-2 active" onClick={() => scrollToCard("UserProfile")}>
-            User Profile
-          </button>
-        </li>
-        <li className="nav-item">
-          <button className="nav-link nav-2 active" onClick={() => scrollToCard("ReportComplaint")}>
-            Report Complaint
-          </button>
-        </li>
-        <li className="nav-item">
-          <button className="nav-link nav-2 active" onClick={() => scrollToCard("CheckStatus")}>
-            Check Status
-          </button>
-        </li>
-        <li className="nav-item">
-          <button className="nav-link nav-2 active" onClick={() => scrollToCard("ComplaintWithdraw")}>
-            Complaint Withdraw
-          </button>
-        </li>
-        <li className="nav-item" onClick={() => scrollToCard("Learn")}>
-          <button className="nav-link nav-2 active">
-            Learn
-          </button>
-        </li>
-        <li className="nav-item">
-          <button className="nav-link nav-2 active" onClick={() => scrollToCard("Chatbot")}>
-            Chatbot
-          </button>
-        </li>
-        <div className="active dropdown">
-                      <button
-                        className="nav-link nav-2 nav-drop dropdown-toggle"
-                        id="dropdownMenu2"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Languages
-                      </button>
-                      <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <li><Link className="dropdown-item">English</Link></li>
-                        <li><Link className="dropdown-item">Marathi</Link></li>
-                        <li><Link className="dropdown-item">Hindi</Link></li>
-                      </ul>
-                    </div>
-      </ul>
+
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard/ReportComplaint"
+          >
+            Report Complaint <FaChevronRight size={14} />
+          </Link>
+
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard/CheckStatus"
+          >
+            Check Status <FaChevronRight size={14} />
+          </Link>
+
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard/ComplaintWithdraw"
+          >
+            Complaint Withdraw <FaChevronRight size={14} />
+          </Link>
+
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard/Learn"
+          >
+            Learn <FaChevronRight size={14} />
+          </Link>
+
+          <Link
+            className="list-group-item d-flex justify-content-between align-items-center"
+            to="/VictimDashboard/Chatbot"
+          >
+            Chatbot <FaChevronRight size={14} />
+          </Link>
+
+          {/* Dropdown for Languages */}
+          <li
+            className="list-group-item d-flex justify-content-between align-items-center"
+            onClick={() => setShowLanguages(!showLanguages)}
+            style={{ cursor: "pointer" }}
+          >
+            Languages {showLanguages ? <FaChevronDown size={14} /> : <FaChevronRight size={14} />}
+          </li>
+
+          {showLanguages && (
+            <ul className="list-group list-group-flush ms-3">
+              <li className="list-group-item">
+                <Link className="text-decoration-none" to="/VictimDashboard/MultiLanguageSupport">
+                  English
+                </Link>
+              </li>
+              <li className="list-group-item">
+                <Link className="text-decoration-none" to="/VictimDashboard/MultiLanguageSupport">
+                  Marathi
+                </Link>
+              </li>
+              <li className="list-group-item">
+                <Link className="text-decoration-none" to="/VictimDashboard/MultiLanguageSupport">
+                  Hindi
+                </Link>
+              </li>
+            </ul>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
