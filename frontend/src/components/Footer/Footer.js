@@ -2,12 +2,18 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="container-expand-lg border-top" style={{backgroundColor:"brown"}}>
+    <div
+      className="container-expand-lg border-top"
+      style={{ backgroundColor: "brown" }}
+    >
       <div className="row mt-2 p-5">
-        <div className="col">
-          <img src="media/images/logo.jpg" style={{ width: "20%" }} /> 
-          <p><br/>
-            &copy;  Content Owned by National Crime Records Bureau(NCRB), Government of India Site Maintained by National Informatics Centre.
+        <div className="col" style={{ marginRight: "20px" }}>
+          <img src="media/images/logo.jpg" style={{ width: "20%" }} />
+          <p>
+            <br />
+            &copy; Content owned by PoliNova, an initiative towards Smart
+            Digital Policing. Site designed and maintained by the PoliNova
+            Development Team.
           </p>
           <div>
             <i class="fa fa-twitter p-2" aria-hidden="true"></i>
@@ -17,33 +23,59 @@ function Footer() {
             <i class="fa fa-telegram p-2" aria-hidden="true"></i>
           </div>
         </div>
-        <div className="col col-link">
+        <div className="col col-link" style={{ marginRight: "20px" }}>
           <p className="fw-bold">QUICK LINKS</p>
-          <a href=""className=" text-decoration-none d-block">Ministry of Home Affairs (MHA) </a> <br/>
-          <a href=""className=" text-decoration-none d-block">National Crime Records Bureau (NCRB) </a><br/>
-          <a href=""className=" text-decoration-none d-block">Central Bureau of Investigation (CBI) </a><br/>
-          <a href=""className=" text-decoration-none d-block">National Investigation Agency(NIA)</a><br/>
-          <a href=""className=" text-decoration-none d-block">E-Courts </a><br/>
-          <a href=""className=" text-decoration-none d-block"> MeitY </a><br/>
-          <a href=""className=" text-decoration-none d-block">Central Police Organizations</a><br/>
-          <a href=""className=" text-decoration-none d-block"> Other Links </a><br/>
-          <a href=""className=" text-decoration-none d-block">Vahan Samanvay </a><br/>
-          <a href=""className=" text-decoration-none d-block"> A Video on Digital Police Portal</a><br/>
+          <a href="" className=" text-decoration-none d-block">
+            Home – Explore the latest updates and features of PoliNova.{" "}
+          </a>{" "}
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            About Us – Learn more about the vision and mission behind PoliNova.{" "}
+          </a>
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            Citizen Services – File complaints, track cases, and access public
+            reports.{" "}
+          </a>
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            Crime Analytics – View data-driven insights and trends for safer
+            communities.
+          </a>
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            Investigation Portal – Secure access for law enforcement officials.{" "}
+          </a>
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            {" "}
+            Help & Support – Get assistance and FAQs about using the PoliNova
+            platform.{" "}
+          </a>
+          <br />
+          <a href="" className=" text-decoration-none d-block">
+            Contact Us – Reach out to the PoliNova support and development team.
+          </a>
         </div>
-        <div className="col">
+        <div className="col" style={{ marginRight: "20px" }}>
           <p className="fw-bold">REACH US</p>
-         <p>Ministry of Home Affairs, North Block Central Secretariat New Delhi -
-          110001 </p><br/>
-          <p>Police Modernisation Division, MHA Women Safety Division,
-          MHA,North Block, New Delhi –Pin code: 110011
-          </p><br/>
+          <p>
+            We are a team of four passionate developers committed to creating a
+            smart and citizen-friendly policing platform:
+            <br/><b> Shraddha Gaikwad, Shravani Mane,<br/> Komal More, Anagha Kulkarni </b>{" "}
+          </p>
+          <p>Contact Information:</p>
+          <p>
+            Office Address: PoliNova Development Hub, 123 Digital Innovation
+            Street, Pune, Maharashtra – 411001{" "}
+          </p>
         </div>
-        <div className="col">
-            <br/><br/>
-         <p>National Crime Records Bureau National </p>
-          <p>Highway-8, Near SSB, Mahipalpur - 110037
-          </p><br/>
-          <p>Email: shraddhagaikwad725@gmail.com</p>
+        <div className="col" style={{ marginRight: "20px" }}>
+          <br />
+          <br />
+          <p>Email: smartfir26@gmail.com</p>
+          <p>Phone: +91-8010090577</p>
+          <p>Website: www.polinova.com</p>
         </div>
       </div>
     </div>
