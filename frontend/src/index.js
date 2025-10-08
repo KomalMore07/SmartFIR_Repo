@@ -14,14 +14,14 @@ import LoginPolice from "./landing_page/login/LoginPolice";
 import LoginVictim from "./landing_page/login/LoginVictim";
 import PoliceDashboard from "./landing_page/PoliceDashboard/PoliceDashboard";
 import VictimDashboard from "./landing_page/VictimDashboard/VictimDashboard";
-import VictimHero from "./landing_page/VictimDashboard/VictimHero";
 import Chatbot from "./landing_page/VictimDashboard/Chatbot";
-import UserProfile from "./landing_page/VictimDashboard/UserProfile";
+import UserProfileForm from "./landing_page/VictimDashboard/UserProfileForm";
 import ReportComplaint from "./landing_page/VictimDashboard/ComplaintForm/ReportComplaint";
 import CheckStatus from "./landing_page/VictimDashboard/ComplaintStatus/CheckStatus";
 import ComplaintWithdraw from "./landing_page/VictimDashboard/ComplaintWithdraw";
 import MultiLanguageSupport from "./landing_page/VictimDashboard/MultiLanguageSupport";
 import Learn from "./landing_page/VictimDashboard/Learn";
+import UserProfile from "./landing_page/VictimDashboard/UserProfile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -33,6 +33,7 @@ root.render(
       <Route path="/AboutPage" element={<AboutPage />} />
       <Route path="/ContactPage" element={<ContactPage />} />
       <Route path="/Logout" element={<Logout />} />
+
       <Route path="/Signup" element={<Signup />} />
       <Route path="/LoginPolice" element={<LoginPolice />} />
       <Route path="/LoginVictim" element={<LoginVictim />} />
@@ -40,17 +41,20 @@ root.render(
       <Route path="/NotFound" element={<NotFound />} />
 
       <Route path="/VictimDashboard" element={<VictimDashboard />}>
-        <Route index element={<VictimHero />} />
+        <Route index element={<UserProfileForm />} />
         <Route path="Chatbot" element={<Chatbot />} />
-        <Route path="UserProfile" element={<UserProfile />} />
+        <Route path="UserProfileForm" element={<UserProfileForm />} />
         <Route path="ReportComplaint" element={<ReportComplaint />} />
         <Route path="CheckStatus" element={<CheckStatus />} />
         <Route path="ComplaintWithdraw" element={<ComplaintWithdraw />} />
-        <Route path="Learn" element={<Learn/>}/>
+        <Route path="Learn" element={<Learn />} />
         <Route path="MultiLanguageSupport" element={<MultiLanguageSupport />} />
-        
+        <Route index element={<UserProfileForm />} />
+        <Route path="UserProfileForm" element={<UserProfileForm />} />
+        <Route path="UserProfile" element={<UserProfile />} />
       </Route>
-      </Routes>
+      
+    </Routes>
 
     <Footer />
   </BrowserRouter>
