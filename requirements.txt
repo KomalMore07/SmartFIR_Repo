@@ -1,10 +1,7 @@
-# pip install -r requirements.txt
-
-
 # === Django Backend Requirements ===
 Django==5.0.6
 djangorestframework==3.15.1
-corsheaders==4.3.1
+django-cors-headers==4.3.1
 Pillow==10.3.0
 python-dotenv==1.0.1
 
@@ -12,10 +9,5 @@ python-dotenv==1.0.1
 requests==2.31.0
 drf-yasg==1.21.7   # For API documentation (optional)
 
-
-pip install qrcode[pil]
-pip install pyotp
-
-
-
-
+qrcode[pil]
+pyotp

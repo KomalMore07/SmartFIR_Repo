@@ -3,11 +3,13 @@ import random
 import pyotp
 import qrcode
 import io
+import re
 from django.core.mail import send_mail
-from django.http import JsonResponse ,HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth.hashers import check_password
 from .models import Victim, EmailVerification, PhoneVerification
 
 
@@ -24,16 +26,13 @@ def send_verification_email(request):
             if not email:
                 return JsonResponse({"error": "Email is required"}, status=400)
 
-            # Generate a 6-digit OTP
             otp = str(random.randint(100000, 999999))
 
-            # Store or update OTP in EmailVerification model
             EmailVerification.objects.update_or_create(
                 email=email,
                 defaults={"token": otp, "created_at": timezone.now()},
             )
 
-            # Send OTP via email
             send_mail(
                 subject="SmartFIR Email Verification Code",
                 message=f"Your SmartFIR verification code is: {otp}\n\nUse this code to verify your email.",
@@ -69,13 +68,11 @@ def verify_email(request):
             if not record:
                 return JsonResponse({"error": "Invalid or expired OTP"}, status=400)
 
-            # Mark as verified
             Victim.objects.update_or_create(
                 email=email,
                 defaults={"is_verified": True, "created_at": timezone.now()},
             )
 
-            # Delete the used OTP
             record.delete()
 
             return JsonResponse({"message": "Email verified successfully!"})
@@ -86,24 +83,21 @@ def verify_email(request):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-# Generate QR code for phone
+
 def generate_qr(request):
     phone = request.GET.get("phone")
     if not phone:
         return JsonResponse({"error": "Phone number is required"}, status=400)
 
-    # Create or fetch the phone record
     obj, created = PhoneVerification.objects.get_or_create(phone=phone)
     if created or not obj.secret:
         obj.secret = pyotp.random_base32()
         obj.created_at = timezone.now()
         obj.save()
 
-    # Create TOTP and provisioning URI (for Google Authenticator)
     totp = pyotp.TOTP(obj.secret)
     uri = totp.provisioning_uri(name=phone, issuer_name="SmartFIR")
 
-    # Generate QR image
     img = qrcode.make(uri)
     buf = io.BytesIO()
     img.save(buf, format="PNG")
@@ -111,7 +105,7 @@ def generate_qr(request):
 
     return HttpResponse(buf.getvalue(), content_type="image/png")
 
-# Verify the OTP entered by the user
+
 @csrf_exempt
 def verify_otp(request):
     if request.method != "POST":
@@ -138,35 +132,43 @@ def verify_otp(request):
         return JsonResponse({"error": "❌ Invalid or expired OTP"}, status=400)
 
 
-
 @csrf_exempt
 def signup(request):
     """
-    Registers a new victim only if email is verified.
+    Registers a new victim only if email & phone are verified, and stores a strong password securely.
     """
     if request.method == "POST":
         try:
             data = json.loads(request.body)
             email = data.get("email")
             phone = data.get("phone")
+            password = data.get("password")
 
             if not email:
                 return JsonResponse({"error": "Email is required"}, status=400)
-            
             if not phone:
                 return JsonResponse({"error": "Phone number is required"}, status=400)
+            if not password:
+                return JsonResponse({"error": "Password is required"}, status=400)
+
+            # ✅ Password strength validation
+            if len(password) < 8 or not re.search(r"[A-Z]", password) or not re.search(r"[a-z]", password) \
+               or not re.search(r"\d", password) or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+                return JsonResponse({
+                    "error": "Password must be at least 8 characters long, include upper and lower case letters, a number, and a special character."
+                }, status=400)
 
             # ✅ Check if email is already verified
             victim = Victim.objects.filter(email=email, is_verified=True).first()
             if not victim:
                 return JsonResponse({"error": "Please verify your email first."}, status=400)
-            
-             # ✅ Check if phone is verified
+
+            # ✅ Check if phone is verified
             phone_record = PhoneVerification.objects.filter(phone=phone, verified=True).first()
             if not phone_record:
                 return JsonResponse({"error": "Please verify your phone first."}, status=400)
 
-            # ✅ Update existing record instead of creating a new one
+            # ✅ Update or create victim record
             victim.first_name = data.get("firstName")
             victim.last_name = data.get("lastName")
             victim.address = data.get("address")
@@ -175,9 +177,10 @@ def signup(request):
             victim.pincode = data.get("pincode")
             victim.country = data.get("country")
             victim.aadhaar = data.get("aadhaar")
-            victim.phone = data.get("phone")
-            victim.created_at = timezone.now()
+            victim.phone = phone
+            victim.password = password  # ✅ will be auto-hashed by model.save()
             victim.is_verified = True
+            victim.created_at = timezone.now()
             victim.save()
 
             return JsonResponse({"message": "Signup successful!", "id": victim.id})
@@ -187,3 +190,39 @@ def signup(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+# ✅ New Login API
+@csrf_exempt
+def login_victim(request):
+    """
+    Authenticates victim login using email and password.
+    """
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            password = data.get("password")
+
+            if not email or not password:
+                return JsonResponse({"error": "Email and password are required"}, status=400)
+
+            victim = Victim.objects.filter(email=email).first()
+            if not victim:
+                return JsonResponse({"error": "User not found"}, status=404)
+
+            if check_password(password, victim.password):
+                return JsonResponse({
+                    "message": "Login successful",
+                    "victim_id": victim.id,
+                    "email": victim.email,
+                    "first_name": victim.first_name,
+                })
+            else:
+                return JsonResponse({"error": "Invalid password"}, status=401)
+
+        except Exception as e:
+            print("❌ Login error:", e)
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
