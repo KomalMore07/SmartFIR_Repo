@@ -294,6 +294,20 @@ function Signup() {
                     >
                         Signup
                     </button>
+
+                    {/* Login Redirect */}
+                    <div className="text-center mt-3">
+                        <p>
+                            Already signed up?{" "}
+                            <span
+                                className="text-primary"
+                                style={{ cursor: "pointer", textDecoration: "underline" }}
+                                onClick={() => navigate("/LoginVictim")}
+                            >
+                                Login here
+                            </span>
+                        </p>
+                    </div>
                 </form>
 
                 {/* --- Direct Login Button --- */}
