@@ -19,6 +19,22 @@ class Victim(models.Model):
     is_phone_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+        # --- START: NEW FIELDS ADDED TO MATCH REACT FORM ---
+    title = models.CharField(max_length=10, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    mobile = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(unique=True, blank=False, null=False) 
+    dob = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    relationType = models.CharField(max_length=50, blank=True, null=True)
+    relationName = models.CharField(max_length=100, blank=True, null=True)
+    # --- END: NEW FIELDS ADDED ---
+    
+    password = models.CharField(max_length=255, default="", blank=True) 
+    is_verified = models.BooleanField(default=False)
+    is_phone_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
 

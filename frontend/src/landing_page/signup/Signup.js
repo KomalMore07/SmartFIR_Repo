@@ -295,6 +295,18 @@ function Signup() {
                         Signup
                     </button>
                 </form>
+
+                {/* --- Direct Login Button --- */}
+                <div className="text-center mt-4">
+                    <p>Already registered?</p>
+                    <button
+                        className="btn btn-outline-primary"
+                        style={{ height: "45px", fontSize: "16px", width: "200px" }}
+                        onClick={() => navigate("/LoginVictim")}
+                    >
+                        Go to Login
+                    </button>
+                </div>
             </div>
         </div>
     );

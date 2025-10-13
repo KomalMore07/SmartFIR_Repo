@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
+import api from "../../api"; // your api.js instance
 
 function UserProfileForm() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     loginId: "",
     title: "",
@@ -28,6 +26,33 @@ function UserProfileForm() {
     },
   });
 
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Fetch profile on component mount
+  useEffect(() => {
+    const email = localStorage.getItem("email"); // get email stored on login
+    if (!email) {
+      setLoading(false);
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, email, loginId: email }));
+
+    api
+      .get(`victim/profile/${email}/`) // call backend via api.js
+      .then((res) => {
+        if (res.data && res.data.email) {
+          // Ensure address is object
+          const address = res.data.address || {};
+          setFormData({ ...res.data, address, loginId: res.data.email });
+          setProfileSaved(true);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in formData.address) {
@@ -40,18 +65,85 @@ function UserProfileForm() {
     }
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/VictimDashboard/UserProfile"); // Navigate to /VictimDashboard/profile
+
+    // Ensure email is included
+    const payload = { ...formData, email: formData.loginId };
+
+    api
+      .post("victim/profile/save/", payload)
+      .then((res) => {
+        setFormData(res.data);
+        setProfileSaved(true);
+        alert("Profile saved successfully!");
+      })
+      .catch((err) => {
+        console.error(err.response?.data || err.message);
+        alert("Error saving profile");
+      });
   };
-  
+
+  if (loading) return <p>Loading...</p>;
+
+  // ✅ Show profile card if profile is saved
+// ✅ Show profile card if profile is saved
+if (profileSaved) {
+  return (
+    <div className="container mt-5">
+      <h4 className="mb-4 text-center">User Profile</h4>
+      <div className="card shadow-lg p-4 rounded-4 border-0" style={{ maxWidth: "700px", margin: "0 auto", backgroundColor: "#f8f9fa" }}>
+        <div className="row mb-3">
+          <div className="col-md-6 mb-2">
+            <strong>Title:</strong> {formData.title}
+          </div>
+          <div className="col-md-6 mb-2">
+            <strong>Name:</strong> {formData.name}
+          </div>
+        </div>
+        <div className="row mb-3">
+          <div className="col-md-6 mb-2">
+            <strong>Mobile:</strong> {formData.mobile}
+          </div>
+          <div className="col-md-6 mb-2">
+  <strong>Email:</strong> {formData.email} 
+</div>
+        </div>
+        <div className="row mb-3">
+          <div className="col-md-6 mb-2">
+            <strong>DOB:</strong> {formData.dob}
+          </div>
+          <div className="col-md-6 mb-2">
+            <strong>Gender:</strong> {formData.gender}
+          </div>
+        </div>
+        <div className="mb-3">
+          <strong>Relation:</strong> {formData.relationType} - {formData.relationName}
+        </div>
+        <h5 className="mt-4 mb-2">Address:</h5>
+        <div className="p-3 rounded-3" style={{ backgroundColor: "#ffffff", border: "1px solid #dee2e6" }}>
+          <p className="mb-1">{formData.address.houseNo}, {formData.address.street}, {formData.address.colony}</p>
+          <p className="mb-1">{formData.address.city}, {formData.address.tehsil}, {formData.address.district}</p>
+          <p className="mb-0">{formData.address.state}, {formData.address.country} - {formData.address.pincode}</p>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => setProfileSaved(false)}
+          >
+            Edit Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
+  // ✅ Show form if profile not saved
   return (
     <div className="container mt-5 mb-5 p-4 shadow-sm bg-light rounded" style={{ maxWidth: "900px" }}>
       <h4 className="mb-4 text-black border-bottom pb-2">User Profile Details</h4>
-
       <form onSubmit={handleSubmit}>
         {/* Login ID */}
         <div className="mb-3">
@@ -84,7 +176,7 @@ function UserProfileForm() {
           ))}
         </div>
 
-        {/* Name, Mobile, DOB */}
+        {/* Name, Mobile, DOB, Gender */}
         <div className="row mb-3">
           <div className="col-md-6">
             <label className="form-label">Name:</label>
@@ -109,7 +201,6 @@ function UserProfileForm() {
             />
           </div>
         </div>
-
         <div className="row mb-3">
           <div className="col-md-6">
             <label className="form-label">Date of Birth:</label>
@@ -166,137 +257,29 @@ function UserProfileForm() {
           </div>
         </div>
 
-        {/* Present Address */}
+        {/* Address */}
         <h5 className="text-black mt-4 mb-3">Present Address</h5>
         <div className="row g-3">
-          <div className="col-md-4">
-            <label className="form-label">House No.</label>
-            <input
-              type="text"
-              className="form-control"
-              name="houseNo"
-              value={formData.address.houseNo}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-8">
-            <label className="form-label">Street Name</label>
-            <input
-              type="text"
-              className="form-control"
-              name="street"
-              value={formData.address.street}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Colony</label>
-            <input
-              type="text"
-              className="form-control"
-              name="colony"
-              value={formData.address.colony}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Village/Town/City</label>
-            <input
-              type="text"
-              className="form-control"
-              name="city"
-              value={formData.address.city}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Tehsil</label>
-            <input
-              type="text"
-              className="form-control"
-              name="tehsil"
-              value={formData.address.tehsil}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Country</label>
-            <select
-              className="form-select"
-              name="country"
-              value={formData.address.country}
-              onChange={handleChange}
-            >
-              <option>India</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">State</label>
-            <select
-              className="form-select"
-              name="state"
-              value={formData.address.state}
-              onChange={handleChange}
-            >
-              <option>Maharashtra</option>
-              <option>Goa</option>
-              <option>Karnataka</option>
-            </select>
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">District</label>
-            <select
-              className="form-select"
-              name="district"
-              value={formData.address.district}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option>Pune</option>
-              <option>Mumbai</option>
-              <option>Nashik</option>
-            </select>
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Police Station</label>
-            <select
-              className="form-select"
-              name="policeStation"
-              value={formData.address.policeStation}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option>Shivaji Nagar</option>
-              <option>Hadapsar</option>
-              <option>Wakad</option>
-            </select>
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Pincode</label>
-            <input
-              type="text"
-              className="form-control"
-              name="pincode"
-              value={formData.address.pincode}
-              onChange={handleChange}
-            />
-          </div>
+          {["houseNo","street","colony","city","tehsil","country","state","district","policeStation","pincode"].map(field => (
+            <div className="col-md-6 mb-3" key={field}>
+              <label className="form-label">{field.charAt(0).toUpperCase()+field.slice(1)}:</label>
+              {field === "country" || field === "state" || field === "district" || field === "policeStation" ? (
+                <select className="form-select" name={field} value={formData.address[field]} onChange={handleChange}>
+                  <option value="">{field === "country" ? "India" : "Select"}</option>
+                  {field === "country" && <option>India</option>}
+                  {field === "state" && ["Maharashtra","Goa","Karnataka"].map(opt => <option key={opt}>{opt}</option>)}
+                  {field === "district" && ["Pune","Mumbai","Nashik"].map(opt => <option key={opt}>{opt}</option>)}
+                  {field === "policeStation" && ["Shivaji Nagar","Hadapsar","Wakad"].map(opt => <option key={opt}>{opt}</option>)}
+                </select>
+              ) : (
+                <input type="text" className="form-control" name={field} value={formData.address[field]} onChange={handleChange} />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Save button */}
         <div className="text-center mt-5">
-          <button type="submit" className="btn btn-danger px-4 py-2">
-            Save & Continue
-          </button>
+          <button type="submit" className="btn btn-danger px-4 py-2">Save & Continue</button>
         </div>
       </form>
     </div>
