@@ -175,7 +175,7 @@ def signup(request):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-# ------------------- LOGIN -------------------
+# ------------------- VICTIM LOGIN -------------------
 @csrf_exempt
 def login_victim(request):
     if request.method == "POST":
@@ -209,12 +209,8 @@ def login_victim(request):
 
 
 # ------------------- PROFILE -------------------
-# ------------------- PROFILE -------------------
 @csrf_exempt
 def get_profile(request, email):
-    """
-    Fetches victim profile details by email.
-    """
     try:
         victim = Victim.objects.get(email=email)
         serializer = VictimSerializer(victim)
@@ -231,9 +227,6 @@ def get_profile(request, email):
 
 @csrf_exempt
 def save_profile(request):
-    """
-    Saves or updates victim profile details.
-    """
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -243,18 +236,14 @@ def save_profile(request):
         if not email:
             return JsonResponse({"error": "Email is required"}, status=400)
 
-        # Convert address object to JSON string if needed
         if isinstance(data.get('address'), dict):
             data['address'] = json.dumps(data['address'])
 
-        # Try to get existing victim
         try:
             victim = Victim.objects.get(email=email)
-            # Update victim fields
             for key, value in data.items():
                 setattr(victim, key, value)
             victim.save()
-            # Convert address back to object before sending response
             response_data = VictimSerializer(victim).data
             if 'address' in response_data:
                 try:
@@ -263,7 +252,6 @@ def save_profile(request):
                     pass
             return JsonResponse(response_data, status=200)
         except Victim.DoesNotExist:
-            # Create new victim if doesn't exist
             serializer = VictimSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -280,3 +268,28 @@ def save_profile(request):
     except Exception as e:
         print("❌ Save profile error:", e)
         return JsonResponse({"error": str(e)}, status=500)
+
+
+# ------------------- POLICE LOGIN (NEW) -------------------
+@csrf_exempt
+def login_police(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            password = data.get("password")
+
+            # ✅ Fixed Police Credentials
+            FIXED_EMAIL = "police@smartfir.com"
+            FIXED_PASSWORD = "Police@123"
+
+            if email == FIXED_EMAIL and password == FIXED_PASSWORD:
+                return JsonResponse({"message": "Police login successful"}, status=200)
+            else:
+                return JsonResponse({"error": "Invalid Police ID or Password"}, status=401)
+
+        except Exception as e:
+            print("❌ Police Login Error:", e)
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
