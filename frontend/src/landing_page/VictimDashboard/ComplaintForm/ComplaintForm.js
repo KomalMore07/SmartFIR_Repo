@@ -7,16 +7,41 @@ function ComplaintForm() {
   const [text, setText] = useState("");
   const maxChars = 1500;
 
+  // ✅ Added state for incident details
+  const [incidentDetails, setIncidentDetails] = useState({
+    category: "",
+    subCategory: "",
+    date: "",
+    hour: "",
+    minute: "",
+    period: "AM",
+    delay: "No",
+    location: "",
+    description: "",
+  });
+
   const handleTabClick = (tab) => setActiveTab(tab);
+
   const handleTextChange = (e) => {
     if (e.target.value.length <= maxChars) {
       setText(e.target.value);
+      setIncidentDetails({ ...incidentDetails, description: e.target.value });
     }
+  };
+
+  // ✅ Common handler for select and input fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setIncidentDetails({ ...incidentDetails, [name]: value });
+  };
+
+  // ✅ Save & Next handler
+  const handleSaveNext = () => {
+    setActiveTab("preview");
   };
 
   return (
     <div className="container mt-4 mb-4">
-      
       <ul className="nav nav-tabs">
         <li className="nav-item">
           <button
@@ -51,37 +76,37 @@ function ComplaintForm() {
           </button>
         </li>
       </ul>
-     
-     <div
-  className="alert  text-dark"
-  style={{
-    backgroundColor: "#d9e7ff",
-    borderRadius: "6px",
-    padding: "10px 15px",
-    marginTop: "30px",
-    marginBottom:"20px",
-    border: "1px solid #b0cfff",
-  }}
-  role="alert"
->
-  Complaint / Incident Details
-</div>
 
+      <div
+        className="alert text-dark"
+        style={{
+          backgroundColor: "#d9e7ff",
+          borderRadius: "6px",
+          padding: "10px 15px",
+          marginTop: "30px",
+          marginBottom: "20px",
+          border: "1px solid #b0cfff",
+        }}
+        role="alert"
+      >
+        Complaint / Incident Details
+      </div>
 
-      
       <div className="card mt-5 mb-5">
-        
-
         <div className="card-body">
           {activeTab === "incident" && (
             <>
-              
               <div className="mb-3 row">
                 <label className="col-sm-4 col-form-label">
                   Category of complaint <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-8">
-                  <select className="form-select">
+                  <select
+                    className="form-select"
+                    name="category"
+                    value={incidentDetails.category}
+                    onChange={handleChange}
+                  >
                     <option>---Select---</option>
                     <option>Theft</option>
                     <option>Fraud</option>
@@ -90,13 +115,17 @@ function ComplaintForm() {
                 </div>
               </div>
 
-             
               <div className="mb-3 row">
                 <label className="col-sm-4 col-form-label">
                   Sub-Category of complaint <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-8">
-                  <select className="form-select">
+                  <select
+                    className="form-select"
+                    name="subCategory"
+                    value={incidentDetails.subCategory}
+                    onChange={handleChange}
+                  >
                     <option>--Select--</option>
                     <option>ATM Fraud</option>
                     <option>Online Scam</option>
@@ -107,34 +136,53 @@ function ComplaintForm() {
 
               <hr />
 
-            
               <div className="mb-3 row align-items-center">
                 <label className="col-sm-4 col-form-label">
-                  Approximate date & time of Incident/receiving/viewing of content{" "}
+                  Approximate date & time of Incident{" "}
                   <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-8 d-flex gap-2">
-                  <input type="date" className="form-control" />
-                  <select className="form-select w-auto">
+                  <input
+                    type="date"
+                    className="form-control"
+                    name="date"
+                    value={incidentDetails.date}
+                    onChange={handleChange}
+                  />
+                  <select
+                    className="form-select w-auto"
+                    name="hour"
+                    value={incidentDetails.hour}
+                    onChange={handleChange}
+                  >
                     <option>HH</option>
                     {[...Array(12)].map((_, i) => (
                       <option key={i + 1}>{i + 1}</option>
                     ))}
                   </select>
-                  <select className="form-select w-auto">
+                  <select
+                    className="form-select w-auto"
+                    name="minute"
+                    value={incidentDetails.minute}
+                    onChange={handleChange}
+                  >
                     <option>MM</option>
                     {[0, 15, 30, 45].map((m) => (
                       <option key={m}>{m.toString().padStart(2, "0")}</option>
                     ))}
                   </select>
-                  <select className="form-select w-auto">
+                  <select
+                    className="form-select w-auto"
+                    name="period"
+                    value={incidentDetails.period}
+                    onChange={handleChange}
+                  >
                     <option>AM</option>
                     <option>PM</option>
                   </select>
                 </div>
               </div>
 
-              
               <div className="mb-3 row">
                 <label className="col-sm-4 col-form-label">
                   Is there any delay in reporting? <span className="text-danger">*</span>
@@ -145,34 +193,37 @@ function ComplaintForm() {
                       className="form-check-input"
                       type="radio"
                       name="delay"
-                      id="delayYes"
+                      value="Yes"
+                      checked={incidentDetails.delay === "Yes"}
+                      onChange={handleChange}
                     />
-                    <label className="form-check-label" htmlFor="delayYes">
-                      Yes
-                    </label>
+                    <label className="form-check-label">Yes</label>
                   </div>
                   <div className="form-check">
                     <input
                       className="form-check-input"
                       type="radio"
                       name="delay"
-                      id="delayNo"
-                      defaultChecked
+                      value="No"
+                      checked={incidentDetails.delay === "No"}
+                      onChange={handleChange}
                     />
-                    <label className="form-check-label" htmlFor="delayNo">
-                      No
-                    </label>
+                    <label className="form-check-label">No</label>
                   </div>
                 </div>
               </div>
 
-              
               <div className="mb-3 row">
                 <label className="col-sm-4 col-form-label">
                   Where did the incident occur? <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-8">
-                  <select className="form-select">
+                  <select
+                    className="form-select"
+                    name="location"
+                    value={incidentDetails.location}
+                    onChange={handleChange}
+                  >
                     <option>---Select---</option>
                     <option>Social Media</option>
                     <option>Banking App</option>
@@ -182,33 +233,31 @@ function ComplaintForm() {
                 </div>
               </div>
 
-              
               <div className="mb-3 row align-items-start">
                 <label className="col-sm-4 col-form-label">
-                  Please provide any additional information about the incident:{" "}
-                  <span className="text-danger">*</span>
+                  Additional information: <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-8">
                   <textarea
                     className="form-control"
                     rows="4"
-                    placeholder="Insert at least 200 characters. Special characters like ~!@#$%^*`|<> are not allowed."
+                    placeholder="Insert at least 200 characters."
                     value={text}
                     onChange={handleTextChange}
                   ></textarea>
-
-                  <small className="text-muted ">
+                  <small className="text-muted">
                     Maximum of 1500 characters -{" "}
                     <span className={text.length > maxChars ? "text-danger fw-bold" : "fw-bold"}>
                       {maxChars - text.length}
                     </span>{" "}
                     characters left
                   </small>
-
                 </div>
                 <div className="mt-5 d-flex justify-content-center">
-                    <button className="btn btn-danger">Save as Draft & Next</button>
-                  </div>
+                  <button className="btn btn-danger" onClick={handleSaveNext}>
+                    Save as Draft & Next
+                  </button>
+                </div>
               </div>
             </>
           )}
@@ -216,11 +265,37 @@ function ComplaintForm() {
           {activeTab === "suspect" && (
             <p className="text-secondary">Suspect details section...</p>
           )}
+
           {activeTab === "complainant" && (
             <p className="text-secondary">Complainant details section...</p>
           )}
+
           {activeTab === "preview" && (
-            <p className="text-secondary">Preview and submit section...</p>
+            <div className="card shadow-sm">
+              <div className="card-header bg-danger text-white fw-bold">
+                Complaint Preview
+              </div>
+              <div className="card-body">
+                <p><strong>Category:</strong> {incidentDetails.category}</p>
+                <p><strong>Sub-Category:</strong> {incidentDetails.subCategory}</p>
+                <p>
+                  <strong>Date & Time:</strong>{" "}
+                  {incidentDetails.date
+                    ? `${incidentDetails.date} ${incidentDetails.hour}:${incidentDetails.minute} ${incidentDetails.period}`
+                    : "Not provided"}
+                </p>
+                <p><strong>Delay in Reporting:</strong> {incidentDetails.delay}</p>
+                <p><strong>Location:</strong> {incidentDetails.location}</p>
+                <p><strong>Description:</strong></p>
+                <p className="border rounded p-2 bg-light">{incidentDetails.description}</p>
+
+                <div className="text-center mt-4">
+                  <button className="btn btn-success px-4">
+                    Submit Complaint
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
