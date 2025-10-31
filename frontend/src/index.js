@@ -22,6 +22,10 @@ import ComplaintWithdraw from "./landing_page/VictimDashboard/ComplaintWithdraw"
 import MultiLanguageSupport from "./landing_page/VictimDashboard/MultiLanguageSupport";
 import Learn from "./landing_page/VictimDashboard/Learn";
 import UserProfile from "./landing_page/VictimDashboard/UserProfile";
+import Rules_Regulations from "./landing_page/VictimDashboard/ComplaintForm/Rules_Regulations";
+import MandatoryList from "./landing_page/VictimDashboard/ComplaintForm/MandatoryList";
+import ComplaintForm from "./landing_page/VictimDashboard/ComplaintForm/ComplaintForm";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -39,12 +43,18 @@ root.render(
       <Route path="/LoginVictim" element={<LoginVictim />} />
       <Route path="/PoliceDashboard" element={<PoliceDashboard />} />
       <Route path="/NotFound" element={<NotFound />} />
+      
+        
 
       <Route path="/VictimDashboard" element={<VictimDashboard />}>
         <Route index element={<UserProfileForm />} />
         <Route path="Chatbot" element={<Chatbot />} />
-        <Route path="UserProfileForm" element={<UserProfileForm />} />
         <Route path="ReportComplaint" element={<ReportComplaint />} />
+        <Route path="Rules_Regulations" element={<Rules_Regulations />} />
+        <Route path="ComplaintForm" element={<ComplaintForm />} />
+        <Route path="MandatoryList" element={<MandatoryList />} />
+        <Route path="UserProfileForm" element={<UserProfileForm />} />
+        {/* <Route path="ReportComplaint" element={<ReportComplaint />} /> */}
         <Route path="CheckStatus" element={<CheckStatus />} />
         <Route path="ComplaintWithdraw" element={<ComplaintWithdraw />} />
         <Route path="Learn" element={<Learn />} />
@@ -52,6 +62,7 @@ root.render(
         <Route index element={<UserProfileForm />} />
         <Route path="UserProfileForm" element={<UserProfileForm />} />
         <Route path="UserProfile" element={<UserProfile />} />
+  
       </Route>
       
     </Routes>

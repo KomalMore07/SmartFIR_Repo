@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 
-function Rules_Regulations() {
+function MandatoryList() {
     return ( 
+        <>
         <div className="portal-section">
       <h2>Filing a Complaint on National Cyber Crime Reporting Portal</h2>
       <hr />
@@ -23,12 +24,13 @@ function Rules_Regulations() {
       </p>
 
       <div className="buttons">
-        <Link to="/VictimDashboard/MandatoryList" className="btn btn-danger">
-         Accept
+        <Link to="/VictimDashboard/ComplaintForm" className="btn btn-danger">
+          Next
         </Link>
       </div>
     </div>
+        </>
      );
 }
 
-export default Rules_Regulations;
+export default MandatoryList;

@@ -1,8 +1,11 @@
 import React from 'react';
+import FIRList from './FIRList';
 
 function PoliceDashboard() {
     return ( 
-        <h1>PoliceDashboard</h1>
+        <>
+        <FIRList />
+        </>
      );
 }
 
